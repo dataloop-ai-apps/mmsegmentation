@@ -1,0 +1,83 @@
+{
+  "name": "mmsegmentation",
+  "displayName": "MMSegmentation Model",
+  "version": "v0.0.0",
+  "scope": "public",
+  "description": "MMSegmentation Model Application by OpenMMLab",
+  "attributes": {
+    "Provider": "OpenMMLab",
+    "Category": "Model",
+    "Computer Vision": "Semantic Segmentation",
+    "License": "Apache 2.0",
+    "Media Type": "Image"
+  },
+  "codebase": {
+    "type": "git",
+    "gitUrl": "https://github.com/dataloop-ai-apps/mmsegmentation.git",
+    "gitTag": "v0.0.0"
+  },
+  "components": {
+    "computeConfigs": [
+      {
+        "name": "mmsegmentation-deploy",
+        "runtime": {
+          "podType": "highmem-xs",
+          "concurrency": 1,
+          "runnerImage": "python:3.8",
+          "autoscaler": {
+            "type": "rabbitmq",
+            "minReplicas": 0,
+            "maxReplicas": 2
+          }
+        }
+      }
+    ],
+    "modules": [
+      {
+        "name": "mmsegmentation-module",
+        "entryPoint": "model_adapter.py",
+        "className": "MMSegmentation",
+        "computeConfig": "mmsegmentation-deploy",
+        "description": "MMSegmentation Module",
+        "initInputs": [
+          {
+            "type": "Model",
+            "name": "model_entity"
+          }
+        ],
+        "functions": [
+          {
+            "name": "predict_items",
+            "input": [
+              {
+                "type": "Item[]",
+                "name": "items",
+                "description": "List of items to run inference on"
+              }
+            ],
+            "output": [],
+            "displayName": "Predict Items",
+            "displayIcon": "",
+            "description": "MMSegmentation predict function"
+          }
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "mmlab-mmsegmentation",
+        "moduleName": "mmsegmentation-module",
+        "scope": "project",
+        "status": "trained",
+        "configuration": {},
+        "supportedMethods": {
+          "load": true,
+          "predict": true,
+          "train": false,
+          "evaluate": true
+        },
+        "description": "MMSegmentation is an open source semantic segmentation toolbox based on PyTorch. It is a part of the OpenMMLab project."
+      }
+    ]
+  }
+}
