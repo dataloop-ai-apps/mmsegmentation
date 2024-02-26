@@ -13,13 +13,9 @@ logger = logging.getLogger('MMSegmentation')
                               name='model-adapter',
                               init_inputs={'model_entity': dl.Model})
 class MMSegmentation(dl.BaseModelAdapter):
-    def __init__(self, model_entity: dl.Model):
-        self.model = None
-        self.confidence_thr = model_entity.configuration.get('confidence_thr', 0.4)
-        self.device = model_entity.configuration.get('device', None)
-        super(MMSegmentation, self).__init__(model_entity=model_entity)
 
     def load(self, local_path, **kwargs):
+        device = self.model_entity.configuration.get('device', None)
         model_name = self.model_entity.configuration.get('model_name', 'pspnet_r50-d8_4xb4-80k_coco-stuff164k-512x512')
         config_file = self.model_entity.configuration.get('config_file',
                                                           'pspnet_r50-d8_4xb4-80k_coco-stuff164k-512x512.py')
@@ -37,10 +33,10 @@ class MMSegmentation(dl.BaseModelAdapter):
                 raise Exception(f'Failed to download MMSegmentation artifacts: {err}')
             logger.info(f"MMSegmentation artifacts downloaded successfully, Loading Model {out}")
 
-        if self.device is None:
-            self.device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
-        logger.info(f"Loading model on device {self.device}")
-        self.model = init_model(config_file, checkpoint_file, device=self.device)
+        if device is None:
+            device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
+        logger.info(f"Loading model on device {device}")
+        self.model = init_model(config_file, checkpoint_file, device=device)
         logger.info("Model Loaded Successfully")
 
     def predict(self, batch, **kwargs):
