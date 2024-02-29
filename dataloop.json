@@ -29,6 +29,9 @@
             "minReplicas": 0,
             "maxReplicas": 2
           }
+        },
+        "versions": {
+          "dtlpy": "1.90.3"
         }
       }
     ],
