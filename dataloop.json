@@ -82,7 +82,7 @@
             ],
             "displayName": "Evaluate a Model",
             "displayIcon": "",
-            "description": "Function to evaluate MMYolo model performance"
+            "description": "Function to evaluate MMSegmantation model performance"
           },
           {
             "name": "predict_items",
