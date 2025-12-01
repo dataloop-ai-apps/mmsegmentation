@@ -2,4 +2,5 @@ mmsegmentation>=1.0.0
 ftfy
 regex
 openmim
+requests>=2.32.4 # not directly required, pinned by Snyk to avoid a vulnerability
 setuptools>=78.1.1 # not directly required, pinned by Snyk to avoid a vulnerability
